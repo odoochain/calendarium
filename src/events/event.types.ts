@@ -1,14 +1,25 @@
-export enum EventCombinator {
+export class EventCondition {
+    constructor(public conditions: Combinator[]) {}
+}
+export class Combinator {
+    constructor(public type: CombinatorEnum, public conditions: Condition[]) {}
+}
+export class Condition {
+    constructor(
+        public condition: ConditionEnum,
+        public timespan: TimeSpanEnum,
+        target: string
+    ) {}
+}
+
+export enum CombinatorEnum {
     AND,
     OR,
     NAND,
     XOR,
 }
-export enum EventOperator {
-    Plus,
-    Minus
-}
-export enum EventCondition {
+
+export enum ConditionEnum {
     Equals,
     GreaterThan,
     GreaterThanOrEqual,
@@ -16,16 +27,16 @@ export enum EventCondition {
     LessThanOrEqual,
     Every,
 }
-export enum EventTimespan {
+export enum TimeSpanEnum {
     Date,
     Year,
     Month,
     MonthNumber,
     Week,
+    WeekDay,
     WeekNumber,
     WeekNumberInMonth,
-
     Moon,
     Random,
-    Event
+    Event,
 }
