@@ -1,12 +1,8 @@
 <script lang="ts">
-    import copy from "fast-copy";
     import { Setting } from "obsidian";
-    import type { CalDate } from "src/schemas";
-    import { CalendarPresetModal } from "src/settings/modals/preset";
-    import { nanoid } from "src/utils/functions";
     import type Calendarium from "src/main";
     import { getContext } from "svelte";
-    import { getPresetCalendar } from "src/settings/preset";
+    import { getPresetCalendar, resolvePreset } from "src/settings/preset";
 
     const calendar = getContext("store");
     const plugin = getContext<Calendarium>("plugin");
@@ -26,7 +22,7 @@
                         );
                         if (!preset) return;
 
-                        $calendar = preset;
+                        $calendar = resolvePreset(preset, preset.id);
                     });
             });
     };

@@ -1,11 +1,20 @@
-import type { CalendariumData, PresetCalendar } from "src/@types";
-import { SyncBehavior } from "../schemas";
+import type {
+    CalendariumData,
+    CustomCalendar,
+    PresetCalendar,
+} from "src/@types";
+import { CalendarType, SyncBehavior } from "../schemas";
 
-export const DEFAULT_CALENDAR: PresetCalendar = {
-    name: null,
+export const DEFAULT_CALENDAR: CustomCalendar = {
+    type: CalendarType.Custom,
+    name: "",
+    id: "",
     description: "",
-    id: null,
     showIntercalarySeparately: true,
+    autoParse: false,
+    path: ["/"],
+    supportInlineEvents: false,
+    inlineEventTag: "#inline-events",
     static: {
         incrementDay: false,
         firstWeekDay: 0,
@@ -20,22 +29,17 @@ export const DEFAULT_CALENDAR: PresetCalendar = {
         eras: [],
     },
     current: {
-        year: null,
-        month: null,
-        day: null,
+        year: 0,
+        month: 0,
+        day: 0,
     },
     events: [],
     categories: [],
-    autoParse: false,
-    path: ["/"],
-    supportInlineEvents: false,
-    inlineEventTag: "#inline-events",
 };
 
 export const DEFAULT_DATA: CalendariumData = {
     addToDefaultIfMissing: true,
     calendars: [],
-    deletedCalendars: [],
     configDirectory: null,
     dailyNotes: false,
     dateFormat: "YYYY-MM-DD",

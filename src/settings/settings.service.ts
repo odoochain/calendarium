@@ -19,7 +19,7 @@ import { nanoid } from "src/utils/functions";
 import Calendarium from "src/main";
 import copy from "fast-copy";
 import { CalendariumNotice } from "src/utils/notice";
-import { SyncBehavior } from "src/schemas";
+import { CalendarType, SyncBehavior } from "src/schemas";
 import {
     isOlder,
     MarkdownReason,
@@ -100,14 +100,14 @@ export default class SettingsService {
      */
     public async onExternalSettingsChange(): Promise<void> {
         // If the user doesn't want their data synced, just ignore this.
-        if (this.#data.syncBehavior === "Never") {
+        if (this.#data.syncBehavior === SyncBehavior.Never) {
             console.debug(
                 "Calendarium: Ignoring external data change event due to syncBehavior being 'Never'"
             );
             return;
         }
         // If the user wants it automatically synced, reload it.
-        if (this.#data.syncBehavior === "Always") {
+        if (this.#data.syncBehavior === SyncBehavior.Always) {
             console.debug(
                 "Calendarium: Automatically reloading data due to syncBehavior being 'Always'"
             );
@@ -681,14 +681,16 @@ export default class SettingsService {
                 calendar.path = [calendar.path];
                 dirty = true;
             }
-            for (const month of calendar.static?.months) {
-                if (month.interval == undefined) {
-                    month.interval = 1;
-                    dirty = true;
-                }
-                if (month.offset == undefined) {
-                    month.offset = 0;
-                    dirty = true;
+            if (calendar.type != CalendarType.Derived) {
+                for (const month of calendar.static?.months) {
+                    if (month.interval == undefined) {
+                        month.interval = 1;
+                        dirty = true;
+                    }
+                    if (month.offset == undefined) {
+                        month.offset = 0;
+                        dirty = true;
+                    }
                 }
             }
             for (const event of calendar.events) {

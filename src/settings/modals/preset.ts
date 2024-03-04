@@ -1,13 +1,13 @@
 import copy from "fast-copy";
 import { ButtonComponent, ExtraButtonComponent } from "obsidian";
-import type { Calendar, PresetCalendar } from "src/@types";
+import type { PresetCalendar } from "src/@types";
 import { nanoid } from "src/utils/functions";
-import { PRESET_CALENDARS } from "src/utils/presets";
+import { PRESET_CALENDARS } from "src/presets/presets";
 import { CalendariumModal } from "./modal";
 import { CLOSE } from "src/utils/icons";
 
 export class CalendarPresetModal extends CalendariumModal {
-    preset: PresetCalendar | Calendar;
+    preset: PresetCalendar;
     saved: boolean;
     async onOpen() {
         await this.display();

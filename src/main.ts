@@ -133,7 +133,8 @@ export default class Calendarium extends Plugin {
     private readonly stores: WeakMap<Calendar, CalendarStore> = new WeakMap();
     public getStoreByCalendar(calendar: Calendar) {
         if (!this.stores.has(calendar)) {
-            this.stores.set(calendar, createCalendarStore(calendar, this));
+            const store = createCalendarStore(calendar, this);
+            this.stores.set(calendar, );
         }
         return this.stores.get(calendar) ?? null;
     }

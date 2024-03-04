@@ -31,15 +31,17 @@ export type StaticCalendarData = {
 /**
  * Calendar
  */
+
+export enum CalendarType {
+    Custom,
+    Preset,
+    Derived,
+}
 type BaseCalendar = {
-    id: string | null;
-    name: string | null;
+    type: CalendarType;
+    id: string;
+    name: string;
     description: string;
-    static: StaticCalendarData;
-    current: CalDate | CalEventDate;
-    events: CalEvent[];
-    categories: CalEventCategory[];
-    date?: number;
     displayWeeks?: boolean;
     autoParse: boolean;
     path: string[];
@@ -47,16 +49,27 @@ type BaseCalendar = {
     inlineEventTag?: string | null;
     dateFormat?: string;
     showIntercalarySeparately: boolean;
+    static: StaticCalendarData;
+    current: CalDate;
+    events: CalEvent[];
+    categories: CalEventCategory[];
 };
 
-export type Calendar = BaseCalendar & {
+export type CustomCalendar = BaseCalendar & {
+    type: CalendarType.Custom;
     id: string;
     name: string;
     description: string;
     current: CalDate;
 };
 export type PresetCalendar = BaseCalendar & {
-    id: null;
-    name: string | null;
+    type: CalendarType.Preset;
+    name: string;
     current: CalEventDate;
+    version: number;
 };
+export type DerivedCalendar = Omit<BaseCalendar, "static"> & {
+    type: CalendarType.Derived;
+    preset: string;
+};
+export type Calendar = CustomCalendar | PresetCalendar | DerivedCalendar;

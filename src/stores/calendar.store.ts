@@ -1,8 +1,4 @@
-import type {
-    Calendar,
-    CalDate,
-    CalEventCategory,
-} from "src/@types";
+import type { CalDate, CalEventCategory, CustomCalendar } from "src/@types";
 import {
     type Readable,
     type Writable,
@@ -23,7 +19,10 @@ export interface CalendarStoreState {
     ephemeral: EphemeralState;
     calendar: string;
 }
-export function createCalendarStore(calendar: Calendar, plugin: Calendarium) {
+export function createCalendarStore(
+    calendar: CustomCalendar,
+    plugin: Calendarium
+) {
     const store = writable(calendar);
     const { set, update, subscribe } = store;
 
@@ -96,7 +95,7 @@ export function createCalendarStore(calendar: Calendar, plugin: Calendarium) {
             });
             plugin.saveCalendars();
         },
-        updateCalendar: (calendar: Calendar) => update((cal) => calendar),
+        updateCalendar: (calendar: CustomCalendar) => update((cal) => calendar),
         eventStore,
         /* addEvent: (date: CalDate) => {
             const modal = new CreateEventModal(plugin, calendar, null, date);
@@ -155,9 +154,9 @@ export interface EphemeralState {
     viewing: CalDate | null;
 }
 export function getEphemeralStore(
-    store: Writable<Calendar>,
+    store: Writable<CustomCalendar>,
     staticStore: StaticStore,
-    base: Calendar,
+    base: CustomCalendar,
     yearCalculator: YearStoreCache
 ) {
     const displaying = writable({ ...base.current });
@@ -169,7 +168,7 @@ export function getEphemeralStore(
     const viewState = writable<ViewState>(ViewState.Month);
     let currentState = ViewState.Month;
     viewState.subscribe((v) => (currentState = v));
-/*     derived(
+    /*     derived(
         [
             viewState,
             viewing,
@@ -407,7 +406,7 @@ export function getEphemeralStore(
     };
 }
 export type StaticStore = ReturnType<typeof createStaticStore>;
-function createStaticStore(store: Writable<Calendar>) {
+function createStaticStore(store: Writable<CustomCalendar>) {
     /** Static Calendar Data */
     const staticData = derived(store, (cal) => cal.static);
     const leapDays = derived(staticData, (data) => data.leapDays);
